@@ -9,6 +9,7 @@ pointerObject.next() // {value: "hello", done: false}
 pointerObject.next() // {value: "try", done: false}
 pointerObject.next() // {value: "done", done: true}
 pointerObject.next() // {value: undefined, done: true}
+// 当done由false->true时pointerObject的[[GeneratorStatus]]值由suspended->closed
 
 /*******yield******/
 // 惰性求值只有当执行gen.next()时候才会计算
@@ -34,3 +35,23 @@ const g = f()
 g.next() // {value:0,done:false}
 g.next() // {value:1,done:false}
 g.next() // {value:0,done:false}
+
+/******遍历******/
+function* foo(){
+    yield 1
+    yield 2
+    yield 3
+    yield 4
+    return 5
+}
+for(let v of foo()){
+    console.log(v)
+}
+// 1 2 3 4
+[...foo()] // [1,2,3,4]
+Array.from(foo()) // [1,2,3,4]
+const tmp = foo()
+tmp.next()
+tmp.next()
+tmp.return('foo') // {value:'foo',done:true}
+tmp.next()  // {value:undifined,done:true}
