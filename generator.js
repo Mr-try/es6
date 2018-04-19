@@ -79,7 +79,17 @@ function* F(){
     yield this.y = 3
 }
 const obj = {}
-const f = F.bind(obj)()
+const f = F.call(obj)
+// const f = F.call(F.prototype)
 
 f.next() // obj = {x:1}
 f.next() // obj = {x:1,y:3}
+/*****状态机******/
+var clock = function* () {
+    while (true) {
+      console.log('Tick!');
+      yield;
+      console.log('Tock!');
+      yield;
+    }
+  };
