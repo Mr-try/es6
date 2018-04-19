@@ -55,3 +55,31 @@ tmp.next()
 tmp.next()
 tmp.return('foo') // {value:'foo',done:true}
 tmp.next()  // {value:undifined,done:true}
+
+/****** yield* ****/
+function* f1(){
+    yield 1
+    yield 2
+}
+function* f2(){
+    yield 3
+    yield* f1()
+    yield 4
+}
+// f2等同于
+function* f3(){
+    yield 3
+    yield 1
+    yield 2
+    yield 4
+}
+/*********this*******/
+function* F(){
+    yield this.x = 1
+    yield this.y = 3
+}
+const obj = {}
+const f = F.bind(obj)()
+
+f.next() // obj = {x:1}
+f.next() // obj = {x:1,y:3}
